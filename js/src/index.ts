@@ -14,12 +14,10 @@ interface AqlResponse {
   data: Object;
 }
 
-/**
- * Create an MCP server with only tools capability (trigger 'query-data' call).
- */
+// Create an MCP server with only tools capability (trigger 'query-data' call).
 const server = new Server(
   {
-    name: "mcp-agentql",
+    name: "agentql-mcp-server",
     version: "0.0.1",
   },
   {
@@ -29,26 +27,33 @@ const server = new Server(
   }
 );
 
+const EXTRACT_TOOL_NAME = "extract-web-data";
+const AGENTQL_API_KEY = process.env.AGENTQL_API_KEY
 
-/**
- * Handler that lists available tools.
- */
+if (!AGENTQL_API_KEY) {
+  console.error(
+    'Error: AGENTQL_API_KEY environment variable is required'
+  );
+  process.exit(1);
+}
+
+// Handler that lists available tools.
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "query-data",
-        description: "extract structured data from a given 'url', using 'prompt' as a description of actual data and its fields to extract",
+        name: EXTRACT_TOOL_NAME,
+        description: "Extracts structured data as JSON from a web page given a URL using a Natural Language description of the data.",
         inputSchema: {
           type: "object",
           properties: {
             url: {
               type: "string",
-              description: "URL of a webpage to extract data from"
+              description: "The URL of the public webpage to extract data from"
             },
             prompt: {
               type: "string",
-              description: "Description of the data to extract from the webpage"
+              description: "Natural Language description of the data to extract from the page"
             }
           },
           required: ["url", "prompt"]
@@ -58,24 +63,23 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-/**
- * Handler for the 'query-data' tool.
- */
+// Handler for the 'extract-web-data' tool.
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
-    case "query-data": {
+    case EXTRACT_TOOL_NAME: {
       const url = String(request.params.arguments?.url);
       const prompt = String(request.params.arguments?.prompt);
       if (!url || !prompt) {
-        throw new Error("'url' and 'prompt' are required");
+        throw new Error("Both 'url' and 'prompt' are required");
       }
 
       const endpoint = "https://api.agentql.com/v1/query-data";
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
-          "X-API-Key": `${process.env.AGENTQL_API_KEY}`,
-          "Content-Type": "application/json"
+          "X-API-Key": `${AGENTQL_API_KEY}`,
+          "X-TF-Request-Origin": "mcp-server",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           url: url,
@@ -98,21 +102,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return {
         content: [{
           type: "text",
-          text: JSON.stringify(json.data)
+          text: JSON.stringify(json.data, null, 2)
         }]
       };
     }
 
     default:
-      throw new Error(`Unknown tool: ${request.params.name}`);
+      throw new Error(`Unknown tool: '${request.params.name}'`);
   }
 });
 
 
-/**
- * Start the server using stdio transport.
- * This allows the server to communicate via standard input/output streams.
- */
+// Start the server using stdio transport.
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
