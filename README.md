@@ -1,6 +1,6 @@
 # AgentQL MCP Server
 
-This is a Model Context Protocol (MCP) server that integrates AgentQL data extraction capabilities.
+This is a Model Context Protocol (MCP) server that integrates [AgentQL](https://agentql.com)'s data extraction capabilities.
 
 ## Features
 
@@ -18,7 +18,7 @@ npm install -g agentql-mcp
 
 ### Configure Claude
 
-- Go to **Settings > Developer**
+- From the menu bar (Mac), go to **Settings > Developer**
 - Click **Edit Config** and open `claude_desktop_config.json` file
 - Add `agentql` server inside `mcpServers` dictionary in the config file
 - Restart the app
@@ -74,15 +74,15 @@ Read more about MCP configuration in Cursor [here](https://docs.cursor.com/conte
 
 Read more about MCP configuration in Windsurf [here](https://docs.codeium.com/windsurf/mcp).
 
-### Validate
+### Validate your MCP integration
 
-Now you can give your agent a task that will be able to use newly added tool. For example:
+Give your agent a task that will requires extracting data from the web. For example:
 
 ```text
-Extract the list of videos from the page https://www.youtube.com/results?search_query=agentql using tools. Make sure every video has a title, an author name, a number of views and a url to the video. Make sure to exclude ads items. Format this as a markdown table.
+Extract the list of videos from the page https://www.youtube.com/results?search_query=agentql. Make sure every video has a title, an author name, a number of views and a url to the video. Make sure to exclude ads items. Format this as a markdown table.
 ```
 
-![AQL Tool Execution](../images/aql_tool_result.png)
+![AQL Tool Execution](images/aql_tool_result.png)
 
 > [!TIP]
 > In case your agent complains that it can't open urls or load content from the web instead of using AgentQL, try adding "use tools" or "use agentql tool" hint.
