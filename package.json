@@ -1,7 +1,7 @@
 {
-  "name": "agentql-mcp-server",
+  "name": "agentql-mcp",
   "version": "0.0.1",
-  "description": "Model Context Protocol server to work with AgentQL",
+  "description": "Model Context Protocol (MCP) server that integrates AgentQL data extraction capabilities.",
   "license": "MIT",
   "repository": "https://github.com/tinyfish-io/mcp-agentql.git",
   "type": "module",
