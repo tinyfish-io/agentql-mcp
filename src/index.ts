@@ -17,7 +17,7 @@ interface AqlResponse {
 // Create an MCP server with only tools capability (trigger 'query-data' call).
 const server = new Server(
   {
-    name: "agentql-mcp-server",
+    name: "agentql-mcp",
     version: "0.0.1",
   },
   {
