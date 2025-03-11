@@ -48,7 +48,7 @@ For dev version the config content will change to refer to the work in progress 
 {
   "mcpServers": {
     "agentql": {
-      "command": "/path/to/aql-server/js/build/index.js",
+      "command": "/path/to/agentql-mcp-server/dist/index.js",
       "env": {
         "AGENTQL_API_KEY": "YOUR_API_KEY"
       }
