@@ -10,6 +10,8 @@ This is a Model Context Protocol (MCP) server that integrates [AgentQL](https://
 
 ## Installation
 
+To use AgentQL MCP Server to extract data from web pages, you need to install it via npm, get an API key from our [Dev Portal](https://dev.agentql.com), and configure it in your favorite app that supports MCP.
+
 ### Install the package
 
 ```bash
