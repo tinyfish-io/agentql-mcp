@@ -13,7 +13,7 @@ interface AqlResponse {
 const server = new Server(
   {
     name: 'agentql-mcp',
-    version: '0.0.2',
+    version: '1.0.0',
   },
   {
     capabilities: {
