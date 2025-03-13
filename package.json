@@ -3,7 +3,8 @@
   "version": "0.0.2",
   "description": "Model Context Protocol (MCP) server that integrates AgentQL data extraction capabilities.",
   "license": "MIT",
-  "repository": "https://github.com/tinyfish-io/mcp-agentql.git",
+  "repository": "https://github.com/tinyfish-io/agentql-mcp.git",
+  "type": "module",
   "bin": {
     "agentql-mcp": "./dist/index.js"
   },
@@ -15,7 +16,7 @@
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
-    "lint": "eslint --config .eslintrc.js src",
+    "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write src"
   },
