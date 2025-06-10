@@ -136,8 +136,6 @@ Read more about MCP configuration in Cursor [here](https://docs.cursor.com/conte
 
 Read more about MCP configuration in Windsurf [here](https://docs.codeium.com/windsurf/mcp).
 
-
-
 ### Validate MCP integration
 
 Give your agent a task that will require extracting data from the web. For example:
