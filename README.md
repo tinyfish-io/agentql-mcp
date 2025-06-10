@@ -101,6 +101,7 @@ Optionally, you can add it to a file called `.vscode/mcp.json` in your workspace
   }
 }
 ```
+
 ### Configure Cursor
 
 - Open **Cursor Settings**
