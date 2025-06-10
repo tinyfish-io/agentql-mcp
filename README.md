@@ -42,6 +42,66 @@ npm install -g agentql-mcp
 
 Read more about MCP configuration in Claude [here](https://modelcontextprotocol.io/quickstart/user).
 
+### Configure VS Code
+
+For one-click installation, click one of the install buttons below:
+
+[![Install with NPX in VS Code](https://img.shields.io/badge/VS_Code-NPM-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=agentql&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22agentql-mcp%22%5D%2C%22env%22%3A%7B%22AGENTQL_API_KEY%22%3A%22%24%7Binput%3AapiKey%7D%22%7D%7D&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22apiKey%22%2C%22description%22%3A%22AgentQL+API+Key%22%2C%22password%22%3Atrue%7D%5D) [![Install with NPX in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-NPM-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=agentql&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22agentql-mcp%22%5D%2C%22env%22%3A%7B%22AGENTQL_API_KEY%22%3A%22%24%7Binput%3AapiKey%7D%22%7D%7D&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22apiKey%22%2C%22description%22%3A%22AgentQL+API+Key%22%2C%22password%22%3Atrue%7D%5D&quality=insiders)
+
+#### Manual Installation
+
+Click the install buttons at the top of this section for the quickest installation method. For manual installation, follow these steps:
+
+Add the following JSON block to your User Settings (JSON) file in VS Code. You can do this by pressing `Ctrl + Shift + P` and typing `Preferences: Open User Settings (JSON)`.
+
+```json
+{
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "apiKey",
+        "description": "AgentQL API Key",
+        "password": true
+      }
+    ],
+    "servers": {
+      "agentql": {
+        "command": "npx",
+        "args": ["-y", "agentql-mcp"],
+        "env": {
+          "AGENTQL_API_KEY": "${input:apiKey}"
+        }
+      }
+    }
+  }
+}
+```
+
+Optionally, you can add it to a file called `.vscode/mcp.json` in your workspace. This will allow you to share the configuration with others.
+
+```json
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "apiKey",
+      "description": "AgentQL API Key",
+      "password": true
+    }
+  ],
+  "servers": {
+    "agentql": {
+      "command": "npx",
+      "args": ["-y", "agentql-mcp"],
+      "env": {
+        "AGENTQL_API_KEY": "${input:apiKey}"
+      }
+    }
+  }
+}
+```
+
 ### Configure Cursor
 
 - Open **Cursor Settings**
