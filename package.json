@@ -1,7 +1,7 @@
 {
   "name": "agentql-mcp",
   "version": "2.0.0",
-  "description": "Model Context Protocol (MCP) server that integrates AgentQL data extraction capabilities.",
+  "description": "MCP server for web data extraction and browser automation via AgentQL — stateless extraction, Tetra cloud browsers, and semantic queries.",
   "license": "MIT",
   "repository": "https://github.com/tinyfish-io/agentql-mcp.git",
   "type": "module",
