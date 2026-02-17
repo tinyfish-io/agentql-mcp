@@ -146,34 +146,36 @@ export async function queryData(
   return { data };
 }
 
-function enrichElements(data: any): any {
+function enrichElements(data: unknown): unknown {
   if (Array.isArray(data)) {
-    return data.map((item) => enrichElements(item));
+    return data.map((item: unknown) => enrichElements(item));
   }
   if (data && typeof data === "object") {
+    const record = data as Record<string, unknown>;
     // Leaf element node — has tf623_id
-    if (data.tf623_id !== undefined) {
+    if (record.tf623_id !== undefined) {
       // Strip noisy attributes (class, style-like props)
       const attrs: Record<string, string> = {};
-      if (data.attributes) {
-        for (const [k, v] of Object.entries(data.attributes)) {
+      const rawAttrs = record.attributes as Record<string, string> | undefined;
+      if (rawAttrs) {
+        for (const [k, v] of Object.entries(rawAttrs)) {
           if (k !== "class" && k !== "background-image" && k !== "style") {
-            attrs[k] = v as string;
+            attrs[k] = v;
           }
         }
       }
       return {
-        selector: `[tf623_id="${data.tf623_id}"]`,
-        tag: data.html_tag || null,
-        role: data.role || null,
-        name: data.name || null,
+        selector: `[tf623_id="${record.tf623_id}"]`,
+        tag: record.html_tag || null,
+        role: record.role || null,
+        name: record.name || null,
         ...(Object.keys(attrs).length > 0 ? { attributes: attrs } : {}),
       };
     }
     // Container node — recurse
     const result: Record<string, unknown> = {};
-    for (const key of Object.keys(data)) {
-      result[key] = enrichElements(data[key]);
+    for (const key of Object.keys(record)) {
+      result[key] = enrichElements(record[key]);
     }
     return result;
   }
