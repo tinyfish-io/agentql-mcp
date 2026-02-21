@@ -46,4 +46,4 @@ jobs:
 
       - name: Publish to NPM
         if: ${{ env.PUBLISH == 'yes' }}
-        run: npm publish
+        run: npm publish --provenance --access public

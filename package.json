@@ -3,10 +3,13 @@
   "version": "1.0.1",
   "description": "Model Context Protocol (MCP) server that integrates AgentQL data extraction capabilities.",
   "license": "MIT",
-  "repository": "https://github.com/tinyfish-io/agentql-mcp.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tinyfish-io/agentql-mcp.git"
+  },
   "type": "module",
   "bin": {
-    "agentql-mcp": "./dist/index.js"
+    "agentql-mcp": "dist/index.js"
   },
   "files": [
     "dist"
