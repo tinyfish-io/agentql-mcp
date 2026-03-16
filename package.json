@@ -37,6 +37,23 @@
     "prettier": "^3.4.2",
     "typescript": "^5.3.3"
   },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^9.0.9"
+    },
+    "@eslint/eslintrc": {
+      "minimatch": "^3.1.5"
+    },
+    "@humanwhocodes/config-array": {
+      "minimatch": "^3.1.5"
+    },
+    "eslint": {
+      "minimatch": "^3.1.5"
+    },
+    "glob": {
+      "minimatch": "^3.1.5"
+    }
+  },
   "keywords": [
     "mcp",
     "agentql",
