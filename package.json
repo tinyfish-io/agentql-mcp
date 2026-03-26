@@ -52,7 +52,8 @@
     },
     "glob": {
       "minimatch": "^3.1.5"
-    }
+    },
+    "flatted": "^3.4.2"
   },
   "keywords": [
     "mcp",
