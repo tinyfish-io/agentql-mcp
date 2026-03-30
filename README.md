@@ -8,6 +8,10 @@ This is a Model Context Protocol (MCP) server that integrates [AgentQL](https://
 
 - `extract-web-data` - extract structured data from a given 'url', using 'prompt' as a description of actual data and its fields to extract.
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/tinyfish-io-agentql-mcp).
+
 ## Installation
 
 To use AgentQL MCP Server to extract data from web pages, you need to install it via npm, get an API key from our [Dev Portal](https://dev.agentql.com), and configure it in your favorite app that supports MCP.
