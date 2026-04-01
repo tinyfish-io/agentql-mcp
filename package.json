@@ -53,7 +53,9 @@
     "glob": {
       "minimatch": "^3.1.5"
     },
-    "flatted": "^3.4.2"
+    "flatted": "^3.4.2",
+    "path-to-regexp": "^8.4.0",
+    "picomatch": "^4.0.4"
   },
   "keywords": [
     "mcp",
