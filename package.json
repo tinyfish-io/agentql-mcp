@@ -1,7 +1,7 @@
 {
   "name": "agentql-mcp",
-  "version": "1.0.1",
-  "description": "Model Context Protocol (MCP) server that integrates AgentQL data extraction capabilities.",
+  "version": "2.0.0",
+  "description": "MCP server for web data extraction and browser automation via AgentQL — stateless extraction, Tetra cloud browsers, and semantic queries.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1",
-    "node-fetch": "^3.3.2"
+    "agentql": "^1.17.0",
+    "node-fetch": "^3.3.2",
+    "playwright": "^1.58.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
