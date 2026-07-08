@@ -105,6 +105,7 @@ async function searchWeb(query: string, count = 10) {
     headers: {
       'X-API-Key': `${YDC_API_KEY}`,
     },
+    signal: AbortSignal.timeout(30_000),
   });
 
   if (!response.ok) {
@@ -167,11 +168,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (!YDC_API_KEY) {
         throw new Error('YDC_API_KEY environment variable is required for search-web');
       }
-      const query = String(request.params.arguments?.query);
-      const count = Number(request.params.arguments?.count ?? 10);
-      if (!query) {
+      const rawQuery = request.params.arguments?.query;
+      if (rawQuery === undefined || rawQuery === null || rawQuery === '') {
         throw new Error("'query' is required");
       }
+      const query = String(rawQuery);
+      const count = Number(request.params.arguments?.count ?? 10);
 
       const json = await searchWeb(query, Number.isFinite(count) && count > 0 ? count : 10);
       const results = {
