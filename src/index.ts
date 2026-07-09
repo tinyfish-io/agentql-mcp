@@ -122,11 +122,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
     case EXTRACT_TOOL_NAME: {
-      const url = String(request.params.arguments?.url);
-      const prompt = String(request.params.arguments?.prompt);
-      if (!url || !prompt) {
+      const rawUrl = request.params.arguments?.url;
+      const rawPrompt = request.params.arguments?.prompt;
+      if (rawUrl === undefined || rawUrl === null || rawUrl === '' || rawPrompt === undefined || rawPrompt === null || rawPrompt === '') {
         throw new Error("Both 'url' and 'prompt' are required");
       }
+      const url = String(rawUrl);
+      const prompt = String(rawPrompt);
 
       const endpoint = 'https://api.agentql.com/v1/query-data';
       const response = await fetch(endpoint, {
