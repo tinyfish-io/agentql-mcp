@@ -4,12 +4,24 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import fetch from 'node-fetch';
 
-// Interface for parsing AQL REST API response.
 interface AqlResponse {
   data: object;
 }
 
-// Create an MCP server with only tools capability (trigger 'query-data' call).
+interface YoucomSearchResult {
+  url: string;
+  title?: string;
+  description?: string;
+  snippets?: string[];
+}
+
+interface YoucomSearchResponse {
+  results?: {
+    web?: YoucomSearchResult[];
+    news?: YoucomSearchResult[];
+  };
+}
+
 const server = new Server(
   {
     name: 'agentql-mcp',
@@ -23,49 +35,100 @@ const server = new Server(
 );
 
 const EXTRACT_TOOL_NAME = 'extract-web-data';
+const SEARCH_TOOL_NAME = 'search-web';
 const AGENTQL_API_KEY = process.env.AGENTQL_API_KEY;
+const YDC_API_KEY = process.env.YDC_API_KEY;
 
 if (!AGENTQL_API_KEY) {
   console.error('Error: AGENTQL_API_KEY environment variable is required');
   process.exit(1);
 }
 
-// Handler that lists available tools.
-server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return {
-    tools: [
-      {
-        name: EXTRACT_TOOL_NAME,
-        description:
-          'Extracts structured data as JSON from a web page given a URL using a Natural Language description of the data.',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            url: {
-              type: 'string',
-              description: 'The URL of the public webpage to extract data from',
-            },
-            prompt: {
-              type: 'string',
-              description: 'Natural Language description of the data to extract from the page',
-            },
+function buildToolList() {
+  const tools: Array<{
+    name: string;
+    description: string;
+    inputSchema: Record<string, unknown>;
+  }> = [
+    {
+      name: EXTRACT_TOOL_NAME,
+      description:
+        'Extracts structured data as JSON from a web page given a URL using a Natural Language description of the data.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          url: {
+            type: 'string',
+            description: 'The URL of the public webpage to extract data from',
           },
-          required: ['url', 'prompt'],
+          prompt: {
+            type: 'string',
+            description: 'Natural Language description of the data to extract from the page',
+          },
         },
+        required: ['url', 'prompt'],
       },
-    ],
-  };
+    },
+  ];
+
+  if (YDC_API_KEY) {
+    tools.push({
+      name: SEARCH_TOOL_NAME,
+      description: 'Searches the web with You.com and returns the top web and news results as JSON.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: {
+            type: 'string',
+            description: 'Search query to send to You.com',
+          },
+          count: {
+            type: 'number',
+            description: 'Number of results per section to request',
+            default: 10,
+          },
+        },
+        required: ['query'],
+      },
+    });
+  }
+
+  return tools;
+}
+
+async function searchWeb(query: string, count = 10) {
+  const endpoint = new URL('https://ydc-index.io/v1/search');
+  endpoint.searchParams.set('query', query);
+  endpoint.searchParams.set('count', String(count));
+
+  const response = await fetch(endpoint.toString(), {
+    headers: {
+      'X-API-Key': `${YDC_API_KEY}`,
+    },
+    signal: AbortSignal.timeout(30_000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`You.com API error: ${response.statusText}\n${await response.text()}`);
+  }
+
+  return (await response.json()) as YoucomSearchResponse;
+}
+
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+  return { tools: buildToolList() };
 });
 
-// Handler for the 'extract-web-data' tool.
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
     case EXTRACT_TOOL_NAME: {
-      const url = String(request.params.arguments?.url);
-      const prompt = String(request.params.arguments?.prompt);
-      if (!url || !prompt) {
+      const rawUrl = request.params.arguments?.url;
+      const rawPrompt = request.params.arguments?.prompt;
+      if (rawUrl === undefined || rawUrl === null || rawUrl === '' || rawPrompt === undefined || rawPrompt === null || rawPrompt === '') {
         throw new Error("Both 'url' and 'prompt' are required");
       }
+      const url = String(rawUrl);
+      const prompt = String(rawPrompt);
 
       const endpoint = 'https://api.agentql.com/v1/query-data';
       const response = await fetch(endpoint, {
@@ -103,12 +166,38 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       };
     }
 
+    case SEARCH_TOOL_NAME: {
+      if (!YDC_API_KEY) {
+        throw new Error('YDC_API_KEY environment variable is required for search-web');
+      }
+      const rawQuery = request.params.arguments?.query;
+      if (rawQuery === undefined || rawQuery === null || rawQuery === '') {
+        throw new Error("'query' is required");
+      }
+      const query = String(rawQuery);
+      const count = Number(request.params.arguments?.count ?? 10);
+
+      const json = await searchWeb(query, Number.isFinite(count) && count > 0 ? count : 10);
+      const results = {
+        web: json.results?.web ?? [],
+        news: json.results?.news ?? [],
+      };
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(results, null, 2),
+          },
+        ],
+      };
+    }
+
     default:
       throw new Error(`Unknown tool: '${request.params.name}'`);
   }
 });
 
-// Start the server using stdio transport.
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
