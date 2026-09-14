@@ -42,28 +42,34 @@
       "minimatch": "^9.0.9"
     },
     "@eslint/eslintrc": {
-      "minimatch": "^3.1.5"
+      "minimatch": "^3.1.5",
+      "brace-expansion": "^1.1.18"
     },
     "@humanwhocodes/config-array": {
-      "minimatch": "^3.1.5"
+      "minimatch": "^3.1.5",
+      "brace-expansion": "^1.1.18"
     },
     "eslint": {
-      "minimatch": "^3.1.5"
+      "minimatch": "^3.1.5",
+      "brace-expansion": "^1.1.18"
     },
     "glob": {
-      "minimatch": "^3.1.5"
+      "minimatch": "^3.1.5",
+      "brace-expansion": "^1.1.18"
     },
     "flatted": "^3.4.2",
     "form-data": "^4.0.6",
-    "fast-uri": "^3.1.2",
+    "fast-uri": "^3.1.7",
     "path-to-regexp": "^8.4.0",
     "picomatch": "^4.0.4",
     "lodash": "^4.18.0",
-    "hono": "^4.12.25",
-    "@hono/node-server": "^1.19.13",
-    "js-yaml": "^4.2.0",
-    "qs": "^6.15.2",
-    "ip-address": "^10.1.1"
+    "hono": "^4.13.7",
+    "@hono/node-server": "^1.19.17",
+    "js-yaml": "^4.3.2",
+    "qs": "^6.16.0",
+    "ip-address": "^10.7.0",
+    "brace-expansion": "^2.1.4",
+    "body-parser": "^2.3.0"
   },
   "keywords": [
     "mcp",
