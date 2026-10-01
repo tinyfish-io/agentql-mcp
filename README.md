@@ -7,6 +7,7 @@ This is a Model Context Protocol (MCP) server that integrates [AgentQL](https://
 ### Tools
 
 - `extract-web-data` - extract structured data from a given 'url', using 'prompt' as a description of actual data and its fields to extract.
+- `search-web` - optional You.com web search helper for finding candidate pages before extraction. Requires `YDC_API_KEY`.
 
 ## Installation
 
@@ -33,7 +34,8 @@ npm install -g agentql-mcp
       "command": "npx",
       "args": ["-y", "agentql-mcp"],
       "env": {
-        "AGENTQL_API_KEY": "YOUR_API_KEY"
+        "AGENTQL_API_KEY": "YOUR_API_KEY",
+        "YDC_API_KEY": "YOUR_YOUCOM_API_KEY"
       }
     }
   }
@@ -46,7 +48,7 @@ Read more about MCP configuration in Claude [here](https://modelcontextprotocol.
 
 For one-click installation, click one of the install buttons below:
 
-[![Install with NPX in VS Code](https://img.shields.io/badge/VS_Code-NPM-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=agentql&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22agentql-mcp%22%5D%2C%22env%22%3A%7B%22AGENTQL_API_KEY%22%3A%22%24%7Binput%3AapiKey%7D%22%7D%7D&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22apiKey%22%2C%22description%22%3A%22AgentQL+API+Key%22%2C%22password%22%3Atrue%7D%5D) [![Install with NPX in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-NPM-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=agentql&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22agentql-mcp%22%5D%2C%22env%22%3A%7B%22AGENTQL_API_KEY%22%3A%22%24%7Binput%3AapiKey%7D%22%7D%7D&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22apiKey%22%2C%22description%22%3A%22AgentQL+API+Key%22%2C%22password%22%3Atrue%7D%5D&quality=insiders)
+[![Install with NPX in VS Code](https://img.shields.io/badge/VS_Code-NPM-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=agentql&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22agentql-mcp%22%5D%2C%22env%22%3A%7B%22AGENTQL_API_KEY%22%3A%22%24%7Binput%3AapiKey%7D%22%2C%22YDC_API_KEY%22%3A%22%24%7Binput%3AydcApiKey%7D%22%7D%7D&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22apiKey%22%2C%22description%22%3A%22AgentQL+API+Key%22%2C%22password%22%3Atrue%7D%2C%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22ydcApiKey%22%2C%22description%22%3A%22You.com+API+Key%22%2C%22password%22%3Atrue%7D%5D) [![Install with NPX in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-NPM-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=agentql&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22agentql-mcp%22%5D%2C%22env%22%3A%7B%22AGENTQL_API_KEY%22%3A%22%24%7Binput%3AapiKey%7D%22%2C%22YDC_API_KEY%22%3A%22%24%7Binput%3AydcApiKey%7D%22%7D%7D&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22apiKey%22%2C%22description%22%3A%22AgentQL+API+Key%22%2C%22password%22%3Atrue%7D%2C%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22ydcApiKey%22%2C%22description%22%3A%22You.com+API+Key%22%2C%22password%22%3Atrue%7D%5D&quality=insiders)
 
 #### Manual Installation
 
@@ -63,6 +65,12 @@ Add the following JSON block to your User Settings (JSON) file in VS Code. You c
         "id": "apiKey",
         "description": "AgentQL API Key",
         "password": true
+      },
+      {
+        "type": "promptString",
+        "id": "ydcApiKey",
+        "description": "You.com API Key",
+        "password": true
       }
     ],
     "servers": {
@@ -70,7 +78,8 @@ Add the following JSON block to your User Settings (JSON) file in VS Code. You c
         "command": "npx",
         "args": ["-y", "agentql-mcp"],
         "env": {
-          "AGENTQL_API_KEY": "${input:apiKey}"
+          "AGENTQL_API_KEY": "${input:apiKey}",
+          "YDC_API_KEY": "${input:ydcApiKey}"
         }
       }
     }
@@ -88,6 +97,12 @@ Optionally, you can add it to a file called `.vscode/mcp.json` in your workspace
       "id": "apiKey",
       "description": "AgentQL API Key",
       "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "ydcApiKey",
+      "description": "You.com API Key",
+      "password": true
     }
   ],
   "servers": {
@@ -95,7 +110,8 @@ Optionally, you can add it to a file called `.vscode/mcp.json` in your workspace
       "command": "npx",
       "args": ["-y", "agentql-mcp"],
       "env": {
-        "AGENTQL_API_KEY": "${input:apiKey}"
+        "AGENTQL_API_KEY": "${input:apiKey}",
+        "YDC_API_KEY": "${input:ydcApiKey}"
       }
     }
   }
@@ -110,7 +126,7 @@ Optionally, you can add it to a file called `.vscode/mcp.json` in your workspace
 - Enter the following:
   - Name: "agentql" (or your preferred name)
   - Type: "command"
-  - Command: `env AGENTQL_API_KEY=YOUR_API_KEY npx -y agentql-mcp`
+  - Command: `env AGENTQL_API_KEY=YOUR_API_KEY YDC_API_KEY=YOUR_YOUCOM_API_KEY npx -y agentql-mcp`
 
 Read more about MCP configuration in Cursor [here](https://docs.cursor.com/context/model-context-protocol).
 
@@ -128,7 +144,8 @@ Read more about MCP configuration in Cursor [here](https://docs.cursor.com/conte
       "command": "npx",
       "args": ["-y", "agentql-mcp"],
       "env": {
-        "AGENTQL_API_KEY": "YOUR_API_KEY"
+        "AGENTQL_API_KEY": "YOUR_API_KEY",
+        "YDC_API_KEY": "YOUR_YOUCOM_API_KEY"
       }
     }
   }
@@ -143,6 +160,12 @@ Give your agent a task that will require extracting data from the web. For examp
 
 ```text
 Extract the list of videos from the page https://www.youtube.com/results?search_query=agentql, every video should have a title, an author name, a number of views and a url to the video. Make sure to exclude ads items. Format this as a markdown table.
+```
+
+Or use the optional You.com helper first:
+
+```text
+search-web query="playwright locator best practices" count=5
 ```
 
 > [!TIP]
@@ -176,7 +199,8 @@ If you want to try out development version, you can use the following config ins
     "agentql": {
       "command": "/path/to/agentql-mcp/dist/index.js",
       "env": {
-        "AGENTQL_API_KEY": "YOUR_API_KEY"
+        "AGENTQL_API_KEY": "YOUR_API_KEY",
+        "YDC_API_KEY": "YOUR_YOUCOM_API_KEY"
       }
     }
   }
@@ -185,13 +209,3 @@ If you want to try out development version, you can use the following config ins
 
 > [!NOTE]
 > Don't forget to remove the default AgentQL MCP server config to not confuse Claude with two similar servers.
-
-## Debugging
-
-Since MCP servers communicate over stdio, debugging can be challenging. We recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), which is available as a package script:
-
-```bash
-npm run inspector
-```
-
-The Inspector will provide a URL to access debugging tools in your browser.
