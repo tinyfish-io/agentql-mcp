@@ -69,7 +69,7 @@
     "qs": "^6.16.0",
     "ip-address": "^10.7.2",
     "brace-expansion": "^2.1.7",
-    "body-parser": "^2.3.0"
+    "body-parser": "^2.4.0"
   },
   "keywords": [
     "mcp",
