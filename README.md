@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/tinyfish-io-agentql-mcp-badge.png)](https://mseep.ai/app/tinyfish-io-agentql-mcp)
+
 # AgentQL MCP Server
 
 This is a Model Context Protocol (MCP) server that integrates [AgentQL](https://agentql.com)'s data extraction capabilities.
